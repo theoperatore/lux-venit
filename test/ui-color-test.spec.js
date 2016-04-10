@@ -16,13 +16,17 @@ let osc = new OSC.Client(process.env.OSC_SERVER_IP_ADDRESS, process.env.OSC_PORT
 
 function waitForBackgroundColorToBe(color) {
   return driver.wait(() => {
-    return driver.findElement(By.xpath("//div[@id='mount']/div")).then(content => {
-      return content.getAttribute('style').then(style => {
-        let testColor = /background-color\:\s+rgb\s*\(.+\)/.exec(style)[0];
-        return testColor === `background-color: rgb(${color})`;
+    return driver.isElementPresent(By.xpath("//div[@id='mount']/div"))
+  }, 3000).then(() => {
+    return driver.wait(() => {
+      return driver.findElement(By.xpath("//div[@id='mount']/div")).then(content => {
+        return content.getAttribute('style').then(style => {
+          let testColor = /background-color\:\s+rgb\s*\(.+\)/.exec(style)[0];
+          return testColor === `background-color: rgb(${color})`;
+        })
       })
-    })
-  }, 3000);
+    }, 3000);
+  })
 }
 
 function sendColor(colorArr) {
