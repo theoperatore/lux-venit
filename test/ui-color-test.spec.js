@@ -19,60 +19,48 @@ function waitForBackgroundColorToBe(color) {
     return driver.findElement(By.xpath("//div[@id='mount']/div")).then(content => {
       return content.getAttribute('style').then(style => {
         let testColor = /background-color\:\s+rgb\s*\(.+\)/.exec(style)[0];
-        return testColor === color;
+        return testColor === `background-color: rgb(${color})`;
       })
     })
   }, 10000);
 }
 
-test('Set background color correctly to 151 151 151', t => {
-  t.plan(1);
-
-  driver.get('http://localhost:9966').then(() => {
-    osc.send('/color', ['151', '151', '151', '0'], err => {
+function sendColor(colorArr) {
+  return new Promise((resolve, reject) => {
+    osc.send('/color', colorArr, err => {
       if (err) {
-        t.fail(err);
-        osc.kill();
+        reject(err);
         return;
       }
-    })
 
-    waitForBackgroundColorToBe('background-color: rgb(151, 151, 151)')
-      .then(() => t.pass('has background-color (151, 151, 151)'))
-      .catch(err => t.fail(err));
+      resolve();
+    })
   })
-})
+}
 
 test('can change to a bunch of different colors', t => {
-  t.plan(2);
+  t.plan(3);
 
   driver.get('http://localhost:9966').then(() => {
-    osc.send('/color', ['0', '0', '0', '0'], err => {
-      if (err) {
-        t.fail(err);
-        osc.kill();
-        return;
-      }
-    })
+    sendColor(['0', '0', '0', '0']).catch(err => t.fail(err));
 
-    return waitForBackgroundColorToBe('background-color: rgb(0, 0, 0)')
+    return waitForBackgroundColorToBe('0, 0, 0')
       .then(() => t.pass('has background-color (0, 0, 0)'))
       .catch(err => t.fail(err));
-      
+
   }).then(() => {
+    sendColor(['121', '161', '21', '0']).catch(err => t.fail(err));
 
-    osc.send('/color', ['121', '161', '21', '0'], err => {
-      if (err) {
-        t.fail(err);
-        osc.kill();
-        return;
-      }
-    })
-
-    return waitForBackgroundColorToBe('background-color: rgb(121, 161, 21)')
+    return waitForBackgroundColorToBe('121, 161, 21')
       .then(() => t.pass('has background-color (121, 161, 21)'))
       .catch(err => t.fail(err));
 
+  }).then(() => {
+    sendColor(['151', '151', '151', '0']).catch(err => t.fail(err));
+
+    return waitForBackgroundColorToBe('151, 151, 151')
+      .then(() => t.pass('has background-color (151, 151, 151)'))
+      .catch(err => t.fail(err));
   })
 })
 
