@@ -22,7 +22,7 @@ function waitForBackgroundColorToBe(color) {
         return testColor === `background-color: rgb(${color})`;
       })
     })
-  }, 10000);
+  }, 3000);
 }
 
 function sendColor(colorArr) {
@@ -39,7 +39,7 @@ function sendColor(colorArr) {
 }
 
 test('can change to a bunch of different colors', t => {
-  t.plan(3);
+  t.plan(4);
 
   driver.get('http://localhost:9966').then(() => {
     sendColor(['0', '0', '0', '0']).catch(err => t.fail(err));
@@ -60,6 +60,12 @@ test('can change to a bunch of different colors', t => {
 
     return waitForBackgroundColorToBe('151, 151, 151')
       .then(() => t.pass('has background-color (151, 151, 151)'))
+      .catch(err => t.fail(err));
+  }).then(() => {
+    sendColor(['13', '33', '37', '0']).catch(err => t.fail(err));
+
+    return waitForBackgroundColorToBe('13, 33, 37')
+      .then(() => t.pass('has background-color (13, 33, 37)'))
       .catch(err => t.fail(err));
   })
 })

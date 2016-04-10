@@ -10,7 +10,8 @@
     "js:prod": "NODE_ENV=production npm run js",
     "dev:server": "node server.js",
     "start": "npm run js:prod && forever server.js",
-    "test": "tape -r babel-register test/*.spec.js test/**/*.spec.js | tap-spec"
+    "test": "tape -r babel-register test/*.spec.js test/**/*.spec.js | tap-spec",
+    "benchmark": "node test/siege.benchmark.js"
   },
   "engines": {
     "npm": ">=3.7.3",
@@ -39,6 +40,7 @@
     "react-dom": "^0.14.8",
     "redux": "^3.3.1",
     "selenium-webdriver": "^2.53.1",
+    "siege": "^0.2.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.5.1",
     "uglify-js": "^2.6.2",
