@@ -2,12 +2,15 @@
 
 import { createStore, combineReducers } from 'redux';
 
-function color(state = [51, 51, 51, 1], action) {
+const DEFAULT_STATE = {
+  rgba: ['51', '51', '51', '1'],
+  fadeTime: '0'
+}
+
+function color(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case 'COLOR_CHANGE':
-      return action.color.length === 4 
-        ? action.color
-        : state;
+      return action.color;
     default:
       return state;
   }

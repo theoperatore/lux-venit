@@ -3,15 +3,26 @@
 const createStore = require('redux').createStore;
 const combineReducers = require('redux').combineReducers;
 
-// rgba
-const DEFAULT_COLOR = ['255', '255', '255', '1'];
+const DEFAULT_STATE = { rgba: ['255', '255', '255', '1'], fadeTime: 0 };
 
 function color(state, action) {
   switch (action.type) {
     case '/color':
-      return action.color;
+      let includesFadeTime = action.data.length > 3;
+      let fadeTime = 0;
+
+      if (includesFadeTime) {
+        let val = Number(action.data[action.data.length - 1]);
+        fadeTime = isNaN(val) ? 0 : val;
+      }
+
+      return {
+        rgba: action.data.slice(0, 3),
+        fadeTime
+      };
+
     default:
-      return state ? state : DEFAULT_COLOR
+      return state ? state : DEFAULT_STATE;
   }
 }
 

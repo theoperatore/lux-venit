@@ -6,15 +6,19 @@ export default React.createClass({
   displayName: 'App',
 
   propTypes: {
-    color: React.PropTypes.array.isRequired
+    color: React.PropTypes.shape({
+      rgba: React.PropTypes.array.isRequired,
+      fadeTime: React.PropTypes.number.isRequired,
+    }).isRequired
   },
 
   render() {
-    let [r, g, b, a] = this.props.color;
+    let { rgba, fadeTime } = this.props.color;
+    let [r, g, b] = rgba;
 
     let style = {
-      backgroundColor: `rgba(${r},${g},${b},${a})`,
-      transition: 'background-color 500ms ease',
+      backgroundColor: `rgba(${r},${g},${b},1)`,
+      transition: `background-color ${fadeTime}ms ease`,
       position: 'absolute',
       top: 0,
       right: 0,

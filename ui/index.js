@@ -19,9 +19,13 @@ socket.on('message', data => {
   store.dispatch(data);
 });
 
+socket.on('connect', (err) => {
+  if (err) throw err;
+  log('connected to server: [ %s ]', getSocketUrl());
+})
+
 store.subscribe(() => {
   let state = store.getState();
-  log('rendering new state', state);
   ReactDOM.render(<App color={state.color} />, mount);
 })
 

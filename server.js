@@ -59,7 +59,7 @@ osc.on('message', (msg, rinfo) => {
   let addr = msg[0];
   let args = msg.slice(1);
   osclog('%s => %o : %o', addr, args, rinfo);
-  store.dispatch({ type: addr, color: args });
+  store.dispatch({ type: addr, data: args });
 });
 
 
@@ -72,13 +72,3 @@ store.subscribe(() => {
   let color = store.getState().color;
   io.emit('message', { type: 'COLOR_CHANGE', color });
 });
-
-
-setInterval(() => {
-  let r = Math.round(Math.random() * 255);
-  let g = Math.round(Math.random() * 255);
-  let b = Math.round(Math.random() * 255);
-  let a = Math.random().toFixed(2);
-
-  store.dispatch({ type: '/color', color: [r, g, b, a] });
-}, 500)
