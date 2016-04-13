@@ -19,10 +19,17 @@ socket.on('message', data => {
   store.dispatch(data);
 });
 
-socket.on('connect', (err) => {
-  if (err) throw err;
+socket.on('connect', () => {
   log('connected to server: [ %s ]', getSocketUrl());
-})
+});
+
+socket.on('connect_error', err => {
+  log('connection error: %o', err);
+});
+
+socket.on('connection_timeout', err => {
+  log('connection timeout: %o', err);
+});
 
 store.subscribe(() => {
   let state = store.getState();

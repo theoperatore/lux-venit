@@ -6,18 +6,18 @@ import test from 'tape';
 import OSC from 'node-osc';
 import webdriver from 'selenium-webdriver';
 
-let By = webdriver.By;
+const osc = new OSC.Client(process.env.OSC_SERVER_IP_ADDRESS, process.env.OSC_PORT);
+const By = webdriver.By;
+const WAIT_TIMEOUT = 3000;
 
-let driver = new webdriver.Builder()
-  .forBrowser('firefox')
+const driver = new webdriver.Builder()
+  .forBrowser('firefox') // built-in webdriver
   .build();
-
-let osc = new OSC.Client(process.env.OSC_SERVER_IP_ADDRESS, process.env.OSC_PORT);
 
 function waitForBackgroundColorToBe(color) {
   return driver.wait(() => {
     return driver.isElementPresent(By.xpath("//div[@id='mount']/div"))
-  }, 3000).then(() => {
+  }, WAIT_TIMEOUT).then(() => {
     return driver.wait(() => {
       return driver.findElement(By.xpath("//div[@id='mount']/div")).then(content => {
         return content.getAttribute('style').then(style => {
@@ -25,7 +25,7 @@ function waitForBackgroundColorToBe(color) {
           return testColor === `background-color: rgb(${color})`;
         })
       })
-    }, 3000);
+    }, WAIT_TIMEOUT);
   })
 }
 
@@ -42,7 +42,7 @@ function sendColor(colorArr) {
   })
 }
 
-test('can change to a bunch of different colors', t => {
+test('E2E: ui changes colors with new state from server', t => {
   t.plan(4);
 
   driver.get('http://localhost:9966').then(() => {
@@ -78,3 +78,5 @@ test.onFinish(() => {
   osc.kill();
   driver.quit();
 })
+
+

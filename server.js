@@ -27,7 +27,7 @@ app.use('*', (req, res, next) => {
 app.use(compression());
 app.use(express.static(`${__dirname}/public`));
 
-app.listen(process.env.HTTP_PORT, () => {
+let server = app.listen(process.env.HTTP_PORT, () => {
   httplog(`http up on port ${process.env.HTTP_PORT}`);
 });
 
@@ -39,10 +39,13 @@ app.listen(process.env.HTTP_PORT, () => {
 ///////////////////////////////////////////////////////////////////////////////
 let io = IO(process.env.WSS_PORT);
 io.on('connection', socket => {
-  let color = store.getState().color;
   wsslog(`wss client connected [ ${socket.id} ]`);
+
+  // send current server state to any newly connected persons
+  let color = store.getState().color;
   socket.emit('message', { type: 'COLOR_CHANGE', color });
 
+  // bye bye person :(
   socket.on('disconnect', () => {
     wsslog('disconnected: [ %s ]', socket.id);
   });
@@ -70,5 +73,18 @@ osc.on('message', (msg, rinfo) => {
 ///////////////////////////////////////////////////////////////////////////////
 store.subscribe(() => {
   let color = store.getState().color;
+  wsslog('sending new state: %o ', color);
   io.emit('message', { type: 'COLOR_CHANGE', color });
 });
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// export stop function used primarily by the unit tests
+//
+///////////////////////////////////////////////////////////////////////////////
+module.export = function stop() {
+  io.close();
+  osc.kill();
+  server.close();
+}

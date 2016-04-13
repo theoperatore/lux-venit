@@ -3,7 +3,7 @@
 const createStore = require('redux').createStore;
 const combineReducers = require('redux').combineReducers;
 
-const DEFAULT_STATE = { rgba: ['255', '255', '255', '1'], fadeTime: 0 };
+const DEFAULT_STATE = { rgba: ['255', '255', '255'], fadeTime: 0 };
 
 function color(state, action) {
   switch (action.type) {
