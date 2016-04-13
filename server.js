@@ -2,9 +2,9 @@
 
 require('localenv');
 
-let httplog = require('debug')('lunina:server:http');
-let wsslog = require('debug')('lunina:server:wss');
-let osclog = require('debug')('lunina:server:osc');
+let httplog = require('debug')('lux:server:http');
+let wsslog = require('debug')('lux:server:wss');
+let osclog = require('debug')('lux:server:osc');
 
 let fs = require('fs')
 let express = require('express');

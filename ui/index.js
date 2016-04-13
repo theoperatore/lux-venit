@@ -11,7 +11,7 @@ import App from './app';
 import store from './state';
 
 const mount = document.querySelector('#mount');
-const log = debug('lunina:client:main');
+const log = debug('lux:client:main');
 const socket = io.connect(getSocketUrl());
 
 socket.on('message', data => {

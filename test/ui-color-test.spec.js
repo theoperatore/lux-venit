@@ -6,7 +6,7 @@ import test from 'tape';
 import OSC from 'node-osc';
 import webdriver from 'selenium-webdriver';
 
-const osc = new OSC.Client(process.env.OSC_SERVER_IP_ADDRESS, process.env.OSC_PORT);
+const osc = new OSC.Client('127.0.0.1', process.env.OSC_PORT);
 const By = webdriver.By;
 const WAIT_TIMEOUT = 3000;
 
