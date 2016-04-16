@@ -6,7 +6,6 @@ let httplog = require('debug')('lux:server:http');
 let wsslog = require('debug')('lux:server:wss');
 let osclog = require('debug')('lux:server:osc');
 
-let fs = require('fs')
 let express = require('express');
 let compression = require('compression');
 let OSC = require('node-osc');
