@@ -7,7 +7,7 @@ const DEFAULT_STATE = { rgba: ['255', '255', '255'], fadeTime: 0 };
 
 function color(state, action) {
   switch (action.type) {
-    case '/color':
+    case '/dwdevices':
       let includesFadeTime = action.data.length > 3;
       let fadeTime = 0;
 

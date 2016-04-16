@@ -10,7 +10,7 @@ const osc = new OSC.Client('127.0.0.1', process.env.OSC_PORT);
 
 function sendColor(colorArr) {
   return new Promise((resolve, reject) => {
-    osc.send('/color', colorArr, err => {
+    osc.send('/dwdevices', colorArr, err => {
       if (err) {
         reject(err);
         return;

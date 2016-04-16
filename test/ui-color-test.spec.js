@@ -31,7 +31,7 @@ function waitForBackgroundColorToBe(color) {
 
 function sendColor(colorArr) {
   return new Promise((resolve, reject) => {
-    osc.send('/color', colorArr, err => {
+    osc.send('/dwdevices', colorArr, err => {
       if (err) {
         reject(err);
         return;
@@ -45,7 +45,7 @@ function sendColor(colorArr) {
 test('E2E: ui changes colors with new state from server', t => {
   t.plan(4);
 
-  driver.get('http://localhost:9966').then(() => {
+  driver.get(`http://localhost:${process.env.HTTP_PORT}`).then(() => {
     sendColor(['0', '0', '0', '0']).catch(err => t.fail(err));
 
     return waitForBackgroundColorToBe('0, 0, 0')

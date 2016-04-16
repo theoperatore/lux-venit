@@ -8,8 +8,9 @@
     "js:watch": "watchify ./ui/index.js -o public/bundle.js -v",
     "js:prod": "NODE_ENV=production npm run js",
     "dev:server": "node server.js",
-    "start": "npm run js:prod && forever server.js",
-    "test": "tape -r babel-register test/*.spec.js test/**/*.spec.js | tap-spec"
+    "start": "NODE_ENV=production npm run js:prod && sudo forever server.js",
+    "test": "tape -r babel-register test/*.spec.js test/**/*.spec.js | tap-spec",
+    "siege": "siege -f urls.txt  -c 50 --internet --time 3M"
   },
   "engines": {
     "npm": ">=3.7.3",
@@ -26,6 +27,7 @@
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
+    "async": "^2.0.0-rc.3",
     "babel": "^6.5.2",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-react": "^6.5.0",
