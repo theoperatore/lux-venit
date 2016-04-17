@@ -61,7 +61,12 @@ osc.on('message', (msg, rinfo) => {
   let addr = msg[0];
   let args = msg.slice(1);
   osclog('%s => %o : %o', addr, args, rinfo);
-  store.dispatch({ type: addr, data: args });
+
+  switch (addr) {
+    case process.env.OSC_AUDIENCE_ADDRESS:
+      store.dispatch({ type: addr, data: args });
+      break;
+  }
 });
 
 

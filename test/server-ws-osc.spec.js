@@ -21,6 +21,19 @@ function sendColor(colorArr) {
   })
 }
 
+function send(addr, msg) {
+  return new Promise((resolve, reject) => {
+    osc.send(addr, msg, err => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      resolve();
+    })
+  })
+}
+
 test('IT: server listens for websocket connections', t => {
   t.plan(1);
 
@@ -87,6 +100,37 @@ test('IT: server interprets a 3 argument message as having 0 fadeTime', t => {
     t.end();
     socket.close();
   });
+})
+
+test('IT: server will only emit a state change for the correct osc address', t => {
+  t.plan(2);
+
+  let socket = io.connect(`http://localhost:${process.env.WSS_PORT}`, { reconnection: false });
+
+  send('/color', ['1', '1', '1', '1']).then(() => {
+    return send('/something-else', ['1', '1', '1', '1']);
+  }).then(() => {
+    return send('/another-not-used-endpoint', ['1', '1', '1', '1']);
+  }).then(() => {
+    return sendColor(['234', '234', '234', '3000']);
+  }).catch(err => {
+    t.fail(err);
+    t.end();
+    socket.close();
+  })
+
+  socket.on('message', data => {
+    t.deepEquals(data.color.rgba, ['234', '234', '234'], 'got expected color values');
+    t.equals(data.color.fadeTime, 3000, 'got expected fade time');
+
+    socket.close();
+  })
+
+  socket.on('connect_error', err => {
+    t.fail(err);
+    t.end();
+    socket.close();
+  })  
 })
 
 test.onFinish(() => {

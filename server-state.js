@@ -7,7 +7,7 @@ const DEFAULT_STATE = { rgba: ['255', '255', '255'], fadeTime: 0 };
 
 function color(state, action) {
   switch (action.type) {
-    case '/dwdevices':
+    case process.env.OSC_AUDIENCE_ADDRESS:
       let includesFadeTime = action.data.length > 3;
       let fadeTime = 0;
 
