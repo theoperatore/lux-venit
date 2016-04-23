@@ -26,4 +26,8 @@ function color(state, action) {
   }
 }
 
-module.exports = createStore(combineReducers({ color }));
+module.exports = function createServerStore(initialState) {
+  initialState = initialState || { color: DEFAULT_STATE };
+  
+  return createStore(combineReducers({ color }), initialState);
+}

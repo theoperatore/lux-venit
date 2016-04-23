@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "description": "the technical workings for the \"Lux Venit\" piece, part of the Synaesthesia Playground.",
   "scripts": {
-    "clean": "rm -rf public/bundle.js",
+    "clean": "npm run rm:db && npm run rm:ui",
     "js": "browserify ./ui/index.js | uglifyjs -cm -o public/bundle.js",
     "js:watch": "watchify ./ui/index.js -o public/bundle.js -v",
     "js:prod": "NODE_ENV=production npm run js",
     "dev:server": "node server.js",
     "start": "NODE_ENV=production npm run js:prod && sudo forever server.js",
+    "rm:db": "sudo rm -rf ./lux-venit-db",
+    "rm:ui": "rm -rf public/bundle.js",
     "test": "tape -r babel-register test/*.spec.js test/**/*.spec.js | tap-spec",
     "siege": "siege -f urls.txt  -c 50 --internet --time 3M"
   },
@@ -23,6 +25,7 @@
     "debug": "^2.2.0",
     "express": "^4.13.4",
     "forever": "^0.15.1",
+    "level": "^1.4.0",
     "node-osc": "^2.0.3",
     "socket.io": "^1.4.5"
   },

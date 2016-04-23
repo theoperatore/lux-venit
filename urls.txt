@@ -1,2 +1,2 @@
-http://localhost:9966/index.html
-http://localhost:9966/bundle.js
+http://localhost:80/index.html
+http://localhost:80/bundle.js
