@@ -7,7 +7,6 @@ let httplog = require('debug')('lux:server:http');
 let wsslog = require('debug')('lux:server:wss');
 let osclog = require('debug')('lux:server:osc');
 
-let leveldb = require('level');
 let express = require('express');
 let compression = require('compression');
 let OSC = require('node-osc');
@@ -52,7 +51,7 @@ createDb((db, initialState) => {
   //
   ///////////////////////////////////////////////////////////////////////////////
   io.on('connection', socket => {
-    wsslog(`wss client connected [ ${socket.id} ]`);
+    wsslog(`wss client connected [ ${socket.id} ] (${Object.keys(io.sockets.sockets).length})`);
 
     // send current server state to any newly connected persons
     let color = store.getState().color;
@@ -60,7 +59,7 @@ createDb((db, initialState) => {
 
     // bye bye person :(
     socket.on('disconnect', () => {
-      wsslog('disconnected: [ %s ]', socket.id);
+      wsslog('disconnected: [ %s ] (%d)', socket.id, Object.keys(io.sockets.sockets).length);
     });
   });
 
@@ -74,6 +73,15 @@ createDb((db, initialState) => {
     let addr = msg[0];
     let args = msg.slice(1);
     osclog('%s => %o : %o', addr, args, rinfo);
+
+
+    // debugging //
+    // let r = Math.round(Math.random() * 255);
+    // let g = Math.round(Math.random() * 255);
+    // let b = Math.round(Math.random() * 255);
+    // let t = Math.round(Math.random() * 6000);
+    // store.dispatch({ type: process.env.OSC_AUDIENCE_ADDRESS, data: [r, g, b, t]});
+
 
     switch (addr) {
       case process.env.OSC_AUDIENCE_ADDRESS:

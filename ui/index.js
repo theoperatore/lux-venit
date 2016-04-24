@@ -33,6 +33,9 @@ socket.on('connection_timeout', err => {
 
 store.subscribe(() => {
   let state = store.getState();
+  let { rgba, fadeTime } = state.color;
+  let [r, g, b] = rgba;
+
   ReactDOM.render(<App color={state.color} />, mount);
 })
 

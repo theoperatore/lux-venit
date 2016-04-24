@@ -3,8 +3,8 @@
 import { createStore, combineReducers } from 'redux';
 
 const DEFAULT_STATE = {
-  rgba: ['51', '51', '51', '1'],
-  fadeTime: '0'
+  rgba: ['0', '0', '0', '1'],
+  fadeTime: -1,
 }
 
 function color(state = DEFAULT_STATE, action) {

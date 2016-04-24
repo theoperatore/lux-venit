@@ -21,19 +21,21 @@ function sendColor(colorArr) {
 }
 
 
-const ITERATIONS = 1000000;
+const ITERATIONS = 1000;
 
 let sequences = [];
 for (var i = 0; i < ITERATIONS; i++) {
   sequences.push(function go(cb) {
-    let r = Math.round(Math.random() * 255);
-    let g = Math.round(Math.random() * 255);
-    let b = Math.round(Math.random() * 255);
-    let t = 0;
+    setTimeout(() => {
+      let r = Math.round(Math.random() * 255);
+      let g = Math.round(Math.random() * 255);
+      let b = Math.round(Math.random() * 255);
+      let t = Math.round(Math.random() * 5000);
 
-    sendColor([r, g, b, t])
-      .then(() => cb())
-      .catch(cb);
+      sendColor([r, g, b, t])
+        .then(() => cb())
+        .catch(cb);
+    }, Math.random() * 1000);
   })
 }
 
