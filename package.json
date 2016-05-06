@@ -8,7 +8,7 @@
     "js:watch": "watchify ./ui/index.js -o public/bundle.js -v",
     "js:prod": "NODE_ENV=production npm run js",
     "dev:server": "node server.js",
-    "start": "NODE_ENV=production npm run js:prod && sudo forever server.js",
+    "start": "NODE_ENV=production npm run js:prod && forever server.js",
     "rm:db": "sudo rm -rf ./lux-venit-db",
     "rm:ui": "rm -rf public/bundle.js",
     "test": "tape -r babel-register test/*.spec.js test/**/*.spec.js | tap-spec",
